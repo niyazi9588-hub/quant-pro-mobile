@@ -16,10 +16,8 @@ android.minapi = 21
 android.ndk = 25b
 android.archs = arm64-v8a
 p4s_branch = master
+android.accept_sdk_licenses = True
 
 [buildozer]
 log_level = 2
 warn_on_root = 1
-# Aşağıdaki satırı ekleyin:
-android.accept_sdk_licenses = True
-
