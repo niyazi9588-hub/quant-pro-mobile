@@ -1,1 +1,0 @@
-# quant-pro-mobile
