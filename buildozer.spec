@@ -20,3 +20,6 @@ p4s_branch = master
 [buildozer]
 log_level = 2
 warn_on_root = 1
+# Aşağıdaki satırı ekleyin:
+android.accept_sdk_licenses = True
+
