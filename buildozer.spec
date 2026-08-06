@@ -2,6 +2,7 @@
 title = Quant Pro Mobil
 package.name = quantpromobil
 package.domain = org.quantpro
+source.dir = .
 source.include_exts = py,png,jpg,kv,atlas
 source.include_patterns = assets/*,images/*.png
 source.exclude_exts = spec
