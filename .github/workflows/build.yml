@@ -8,6 +8,7 @@ on:
 
 jobs:
   build:
+
     runs-on: ubuntu-22.04
 
     steps:
@@ -29,59 +30,63 @@ jobs:
         java-version: "17"
 
 
-    - name: Setup Android
+    - name: Setup Android SDK
       uses: android-actions/setup-android@v3
 
 
-    - name: Install Android SDK
+    - name: Install Android SDK packages
       run: |
-        yes | sdkmanager --licenses
+        yes | sdkmanager --licenses || true
 
         sdkmanager \
-        "platform-tools" \
-        "platforms;android-33" \
-        "build-tools;33.0.2"
+          "platform-tools" \
+          "platforms;android-33" \
+          "build-tools;33.0.2"
 
 
-    - name: Install Linux dependencies
+    - name: Set Android Environment
       run: |
-        sudo apt update
+        echo "ANDROID_HOME=/usr/local/lib/android/sdk" >> $GITHUB_ENV
+        echo "ANDROID_SDK_ROOT=/usr/local/lib/android/sdk" >> $GITHUB_ENV
 
-        sudo apt install -y \
-        git zip unzip \
-        build-essential \
-        python3-dev \
-        autoconf \
-        automake \
-        libtool \
-        pkg-config \
-        zlib1g-dev \
-        libffi-dev \
-        libssl-dev
+
+    - name: Install Linux Dependencies
+      run: |
+        sudo apt-get update
+
+        sudo apt-get install -y \
+          git \
+          zip \
+          unzip \
+          build-essential \
+          python3-dev \
+          autoconf \
+          automake \
+          libtool \
+          pkg-config \
+          zlib1g-dev \
+          libffi-dev \
+          libssl-dev
 
 
     - name: Install Buildozer
       run: |
-        pip install --upgrade pip
+        python -m pip install --upgrade pip
         pip install buildozer==1.5.0
-        pip install cython==0.29.36
+        pip install Cython==0.29.36
 
 
-    - name: Prepare Buildozer SDK
+    - name: Clean Build
       run: |
-        mkdir -p ~/.buildozer/android/platform/android-sdk
-
-        cp -r $ANDROID_HOME/build-tools ~/.buildozer/android/platform/android-sdk/
-
-        cp -r $ANDROID_HOME/platforms ~/.buildozer/android/platform/android-sdk/
+        rm -rf .buildozer
+        rm -rf ~/.buildozer
 
 
     - name: Build APK
       env:
-        ANDROID_HOME: /home/runner/.buildozer/android/platform/android-sdk
-        ANDROID_SDK_ROOT: /home/runner/.buildozer/android/platform/android-sdk
+        ANDROID_HOME: /usr/local/lib/android/sdk
+        ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
       run: |
-        rm -rf .buildozer
         buildozer -v android debug
 
 
