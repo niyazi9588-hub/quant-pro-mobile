@@ -18,10 +18,11 @@ android.permissions = INTERNET
 
 android.api = 33
 android.minapi = 21
-android.sdk = 33
-android.build_tools_version = 33.0.2
 android.ndk = 25b
 android.archs = arm64-v8a
+
+# İlk derleme için önerilir
+p4a.branch = develop
 
 [buildozer]
 
