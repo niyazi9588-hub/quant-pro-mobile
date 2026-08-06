@@ -9,53 +9,66 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
 
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.10'
+        python-version: "3.10"
 
-    - name: Install system dependencies
+
+    - name: Install Linux dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y \
-            python3-pip \
-            build-essential \
-            git \
-            python3-dev \
-            ffmpeg \
-            libsdl2-dev \
-            libsdl2-image-dev \
-            libsdl2-mixer-dev \
-            libsdl2-ttf-dev \
-            libportmidi-dev \
-            libswscale-dev \
-            libavformat-dev \
-            libavcodec-dev \
-            zlib1g-dev \
-            unzip
 
-    - name: Install Android SDK tools
+        sudo apt-get install -y \
+          build-essential \
+          git \
+          python3-dev \
+          python3-pip \
+          unzip \
+          zip \
+          ffmpeg \
+          libsdl2-dev \
+          libsdl2-image-dev \
+          libsdl2-mixer-dev \
+          libsdl2-ttf-dev \
+          libportmidi-dev \
+          libswscale-dev \
+          libavformat-dev \
+          libavcodec-dev \
+          zlib1g-dev
+
+
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+
+
+    - name: Install Android SDK packages
       run: |
-        yes | sdkmanager --licenses || true
-        sdkmanager \
-          "platform-tools" \
-          "platforms;android-33" \
-          "build-tools;33.0.2"
+        sdkmanager "platform-tools"
+        sdkmanager "platforms;android-33"
+        sdkmanager "build-tools;33.0.2"
+
 
     - name: Install Buildozer
       run: |
-        pip install --upgrade pip
+        python -m pip install --upgrade pip
         pip install buildozer
         pip install cython==0.29.36
 
-    - name: Build with Buildozer
+
+    - name: Build APK
       run: |
+        buildozer android clean
         buildozer -v android debug
 
-    - name: Upload APK Artifact
+
+    - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
-        name: package
+        name: Quant-Pro-APK
         path: bin/*.apk
