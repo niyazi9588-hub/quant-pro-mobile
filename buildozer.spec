@@ -1,10 +1,13 @@
 [app]
 
 title = Quant Pro Mobil
+
 package.name = quantpromobil
+
 package.domain = org.quantpro
 
 source.dir = .
+
 source.include_exts = py,kv,png,jpg,jpeg,atlas
 
 version = 1.0
@@ -12,6 +15,7 @@ version = 1.0
 requirements = python3,kivy==2.3.0,requests,urllib3,certifi
 
 orientation = portrait
+
 fullscreen = 0
 
 android.permissions = INTERNET
@@ -21,8 +25,6 @@ android.minapi = 21
 android.ndk = 25b
 android.archs = arm64-v8a
 
-# İlk derleme için önerilir
-p4a.branch = develop
 
 [buildozer]
 
